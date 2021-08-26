@@ -134,13 +134,7 @@ class LoginProvider extends ChangeNotifier {
   double _overallPosition = 200;
   double get overallPosition =>
       _keyboardOpened ? _overallPosition - 150 : _overallPosition;
-  double get loginFieldPosition => overallPosition + 100;
-  double get loginFieldHeight => _hasAuthError ? 270 : 245;
-  double get signUpFieldHeight {
-    if (_getErrorNumber() == 0 && _hasAuthError) return 340.0;
-    return _buttonPressed ? _getErrorNumber() * 13 + 310.0 : 310;
-  }
-
+  double get loginFieldPosition => overallPosition + 80;
   double get signUpFieldPosition => overallPosition + 50;
 
   bool _keyboardOpened = false;

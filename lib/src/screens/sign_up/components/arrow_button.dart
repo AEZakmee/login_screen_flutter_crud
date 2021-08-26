@@ -12,11 +12,11 @@ class ArrowButtonBackground extends StatelessWidget {
     Key key,
     this.hasShadow = false,
     this.child,
-    @required this.height,
+    this.bottom = 0,
   }) : super(key: key);
   final bool hasShadow;
   final Widget child;
-  final double height;
+  final double bottom;
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
@@ -24,7 +24,7 @@ class ArrowButtonBackground extends StatelessWidget {
       curve: kAnimTypeLogin,
       right: 0,
       left: 0,
-      top: height,
+      bottom: bottom,
       child: Center(
         child: Container(
           height: getProportionateScreenHeight(105),

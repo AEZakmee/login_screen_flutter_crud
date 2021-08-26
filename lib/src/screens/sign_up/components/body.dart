@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:crud_flutter_firebase/src/screens/loading/loading_screen.dart';
+import 'package:flutter/animation.dart';
+
+import '../../loading/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
-
 import '../../../size_config.dart';
 import '../../../styles/colors.dart';
 import '../../../styles/constans.dart';
@@ -60,86 +61,83 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            ArrowButtonBackground(
-              height: getProportionateScreenHeight(prov.isSignUp
-                  ? prov.signUpFieldPosition + prov.signUpFieldHeight - 50
-                  : prov.loginFieldPosition + prov.loginFieldHeight - 50),
-              hasShadow: true,
-            ),
             AnimatedPositioned(
               duration: kAnimDurationLogin,
               curve: kAnimTypeLogin,
+              right: 0,
+              left: 0,
               top: getProportionateScreenHeight(prov.isSignUp
                   ? prov.signUpFieldPosition
                   : prov.loginFieldPosition),
               child: AnimatedContainer(
                 duration: kAnimDurationLogin,
                 curve: kAnimTypeLogin,
-                height: getProportionateScreenHeight(prov.isSignUp
-                    ? prov.signUpFieldHeight
-                    : prov.loginFieldHeight),
+                color: Colors.transparent,
                 width: SizeConfig.screenWidth - getProportionateScreenWidth(40),
                 margin: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20),
                 ),
-                decoration: kBoxDecoration,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
+                child: Stack(
+                  children: [
+                    ArrowButtonBackground(
+                      hasShadow: true,
+                    ),
+                    Column(
                       children: [
-                        ButtonsRow(),
-                        InputFields(),
-                        if (prov.hasAuthError)
-                          Center(
-                            child: Text(
-                              prov.authErrorString,
-                              style: TextStyle(
-                                color: kErrorColor,
-                                fontSize: getProportionateScreenHeight(15),
-                                fontWeight: FontWeight.w500,
-                              ),
+                        AnimatedContainer(
+                          duration: kAnimDurationLogin,
+                          curve: kAnimTypeLogin,
+                          decoration: kBoxDecoration,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: getProportionateScreenWidth(20),
+                            ),
+                            child: Column(
+                              children: [
+                                ButtonsRow(),
+                                InputFields(),
+                                if (prov.hasAuthError)
+                                  Center(
+                                    child: Text(
+                                      prov.authErrorString,
+                                      style: TextStyle(
+                                        color: kErrorColor,
+                                        fontSize:
+                                            getProportionateScreenHeight(15),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                SizedBox(
+                                  height: getProportionateScreenHeight(55),
+                                ),
+                              ],
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(55),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-            ),
-            ArrowButtonBackground(
-              height: getProportionateScreenHeight(prov.isSignUp
-                  ? prov.signUpFieldPosition + prov.signUpFieldHeight - 50
-                  : prov.loginFieldPosition + prov.loginFieldHeight - 50),
-              child: ArrowButton(
-                onPress: () async {
-                  var success =
-                      await Provider.of<LoginProvider>(context, listen: false)
-                          .signUp();
-                  if (success) {
-                    Navigator.pushReplacementNamed(
-                        context, LoadingScreen.routeName);
-                  }
-                },
-              ),
-            ),
-            if (!prov.keyboardOpened)
-              Positioned(
-                bottom: getProportionateScreenHeight(30),
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      color: kTextColor,
-                      fontSize: getProportionateScreenHeight(15),
+                    ArrowButtonBackground(
+                      child: ArrowButton(
+                        onPress: () async {
+                          var success = await Provider.of<LoginProvider>(
+                                  context,
+                                  listen: false)
+                              .signUp();
+                          if (success) {
+                            Navigator.pushReplacementNamed(
+                                context, LoadingScreen.routeName);
+                          }
+                        },
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
+            ),
           ],
         );
       }),
